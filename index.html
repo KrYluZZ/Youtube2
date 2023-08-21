@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Youtube.com</title>
+  <style>
+    /* Styl dla obrazka t³a */
+    #background {
+      background-image: url("tlo.png");
+      width: 100%;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      cursor: pointer; /* Dodanie kursora wskazuj¹cego, ¿e t³o jest klikalne */
+    }
+
+    /* Styl dla p³ywaj¹cej warstwy */
+    #floatingLayer {
+      width: 300px;
+      height: 200px;
+      background-color: rgba(255, 255, 255, 0.9);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      opacity: 80%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: none; /* Ukrycie warstwy na pocz¹tku */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Styl dla przycisku odtwarzacza */
+    #playButton {
+      display: none;
+    }
+
+    /* Styl dla warstwy odtwarzacza */
+    #audioLayer {
+      position: relative;
+      z-index: 0;
+    }
+    #videoBackground {
+      width: 100vw; /* Zmienione na szerokoœæ viewportu */
+      height: 100vh;
+      z-index: -1;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div id="background" onclick="playAudio()"></div>
+  <div id="backgroundContainer">
+    <video id="videoBackground" autoplay muted loop>
+      <source src="mydlo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div id="floatingLayer">
+    <h2>RYSZARD BIJE MISKE!!!</h2>
+    <p>Pozdrawiam KrYlu JP RYSZARD JP ARO JP DAWID.</p>
+    <img src="bije.gif" alt="Bije GIF" width="100" height="100"> <!-- Zmniejszone wymiary obrazka -->
+  </div>
+  <div id="audioLayer">
+    <audio id="audioPlayer1" controls loop>
+      <source src="szmata.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    
+    <audio id="audioPlayer2" controls loop>
+      <source src="szmata1.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <script>
+
+    function playAudio() {
+      var audioPlayer1 = document.getElementById("audioPlayer1");
+      var audioPlayer2 = document.getElementById("audioPlayer2");
+      var floatingLayer = document.getElementById("floatingLayer");
+      var background = document.getElementById("background");
+
+      audioPlayer1.play();
+      audioPlayer2.play();
+
+      // Ukryj t³o
+      background.style.display = "none";
+
+      // Poka¿ p³ywaj¹c¹ warstwê
+      floatingLayer.style.display = "block";
+    }
+
+    function closeFloatingLayer() {
+      var floatingLayer = document.getElementById("floatingLayer");
+      var background = document.getElementById("background");
+
+      // Poka¿ t³o
+      background.style.display = "block";
+
+      // Ukryj p³ywaj¹c¹ warstwê
+      floatingLayer.style.display = "none";
+    }
+    var lockedArea = document.getElementById("background");
+    var isMouseLocked = false;
+
+    lockedArea.addEventListener("mousedown", function (event) {
+      if (!isMouseLocked) {
+        lockedArea.requestPointerLock = lockedArea.requestPointerLock || lockedArea.mozRequestPointerLock || lockedArea.webkitRequestPointerLock;
+        lockedArea.requestPointerLock();
+      }
+    });
+
+    document.addEventListener("pointerlockchange", pointerLockChange);
+    document.addEventListener("mozpointerlockchange", pointerLockChange);
+    document.addEventListener("webkitpointerlockchange", pointerLockChange);
+
+    function pointerLockChange() {
+      if (document.pointerLockElement === lockedArea || document.mozPointerLockElement === lockedArea || document.webkitPointerLockElement === lockedArea) {
+        isMouseLocked = true;
+      } else {
+        isMouseLocked = false;
+      }
+    }
+    // Dodanie zdarzenia przed zamkniêciem strony
+    window.addEventListener("beforeunload", function (event) {
+      event.preventDefault();
+      event.returnValue = "";
+    });
+  </script>
+</body>
+</html>
